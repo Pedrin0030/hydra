@@ -88,7 +88,7 @@ const compareFltFolder = async (game: Game, file: AchievementFile) => {
   }
 };
 
-const compareFile = (game: Game, file: AchievementFile) => {
+export const compareFile = (game: Game, file: AchievementFile) => {
   if (file.type === Cracker.flt) {
     return compareFltFolder(game, file);
   }
