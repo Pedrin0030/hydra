@@ -1,5 +1,7 @@
 import cp from "node:child_process";
 
+
+
 import { Game } from "@main/entity";
 import {
   RPC_PASSWORD,
@@ -7,7 +9,7 @@ import {
   startTorrentClient as startRPCClient,
 } from "./torrent-client";
 import { gameRepository } from "@main/repository";
-import type { DownloadProgress } from "@types";
+import type { DownloadProgress } from"/home/pedro/hydra/src/types/index";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import { calculateETA } from "./helpers";
 import axios from "axios";
@@ -25,12 +27,14 @@ export class PythonInstance {
   private static pythonProcess: cp.ChildProcess | null = null;
   private static downloadingGameId = -1;
 
+
   private static rpc = axios.create({
     baseURL: `http://localhost:${RPC_PORT}`,
     headers: {
       "x-hydra-rpc-password": RPC_PASSWORD,
     },
   });
+
 
   public static spawn(args?: StartDownloadPayload) {
     logger.log("spawning python process with args:", args);

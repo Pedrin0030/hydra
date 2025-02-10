@@ -4,11 +4,24 @@
     { "path": "./tsconfig.node.json" },
     { "path": "./tsconfig.web.json" }
   ],
-  "compilerOptions": {
-    "baseUrl": "./src", // Diretório base para resolução de módulos
-    "paths": {
-      "@main/*": ["src/main/*"]
-        }
+  
+        "compilerOptions": {
+          "esModuleInterop": true,   "module": "esnext",
+          "moduleResolution": "node",  
+      "baseUrl": "./src",
+      "paths": {
+        "@main/*": ["main/*"]
       }
+    }
+  }
+  
+
+  
+  
+  
+  
     
-}
+  
+  
+    
+

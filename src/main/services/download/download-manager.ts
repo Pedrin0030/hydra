@@ -1,11 +1,11 @@
 import { Game } from "@main/entity";
-import { Downloader } from "@shared";
+import { Downloader } from "/home/pedro/hydra/src/shared/index";
 import { PythonInstance } from "./python-instance";
 import { WindowManager } from "../window-manager";
 import { downloadQueueRepository, gameRepository } from "@main/repository";
 import { publishDownloadCompleteNotification } from "../notifications";
 import { RealDebridDownloader } from "./real-debrid-downloader";
-import type { DownloadProgress } from "@types";
+import type { DownloadProgress } from "/home/pedro/hydra/src/types/index";
 import { GofileApi, QiwiApi } from "../hosters";
 import { GenericHttpDownloader } from "./generic-http-downloader";
 
@@ -99,10 +99,13 @@ export class DownloadManager {
   }
 
   static async startDownload(game: Game) {
+    //  Limpa a fila de downloads antes de adicionar um novo jogo
+    await downloadQueueRepository.delete({});
+    await downloadQueueRepository.save({ game });
+
     switch (game.downloader) {
       case Downloader.Gofile: {
         const id = game!.uri!.split("/").pop();
-
         const token = await GofileApi.authorize();
         const downloadLink = await GofileApi.getDownloadLink(id!);
 
@@ -113,7 +116,6 @@ export class DownloadManager {
       }
       case Downloader.PixelDrain: {
         const id = game!.uri!.split("/").pop();
-
         await GenericHttpDownloader.startDownload(
           game,
           `https://pixeldrain.com/api/file/${id}?download`
@@ -122,7 +124,6 @@ export class DownloadManager {
       }
       case Downloader.Qiwi: {
         const downloadUrl = await QiwiApi.getDownloadUrl(game.uri!);
-
         await GenericHttpDownloader.startDownload(game, downloadUrl);
         break;
       }
@@ -131,9 +132,14 @@ export class DownloadManager {
         break;
       case Downloader.RealDebrid:
         RealDebridDownloader.startDownload(game);
+        break;
     }
 
     this.currentDownloader = game.downloader;
     this.downloadingGameId = game.id;
-  }
 }
+
+
+ 
+  }
+

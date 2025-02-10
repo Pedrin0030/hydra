@@ -1,4 +1,4 @@
-import { logsPath } from "@main/constants";
+import { logsPath } from "/home/pedro/hydra/src/main/constants";
 import log from "electron-log";
 import path from "path";
 
